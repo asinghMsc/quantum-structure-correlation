@@ -1,0 +1,30 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+venv/
+.env
+
+# LaTeX / PDF
+*.aux
+*.log
+*.out
+*.toc
+*.pdf
+*.synctex.gz
+*.bbl
+*.blg
+*.fdb_latexmk
+*.fls
+arxiv_manuscript/
+
+# Results & Data
+# experiment_results.json # Keeping this to provide reference results
+
+# Archives & Temporary
+*.zip
+*.tar.gz
+prepare_submission.py
+# debug_circuit.py # Keeping this if you want it on git
+arxiv_submission_Singh.zip
+arxiv_submission_ Singh.zip

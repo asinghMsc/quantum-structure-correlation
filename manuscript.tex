@@ -1,0 +1,413 @@
+\documentclass[11pt]{article}
+\usepackage{amsmath, amssymb}
+\usepackage{graphicx}
+\usepackage{booktabs}
+\usepackage{hyperref}
+
+\title{Structured Correlation Levels After Partial Time Reversal in Small-Scale Quantum Systems}
+\author{Amrit Singh\thanks{ORCID: \href{https://orcid.org/0009-0008-7267-342X}{0009-0008-7267-342X}}}
+\date{}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+Structured correlations---defined as non-random patterns in mutual information between subsystems---arise in complex systems across physical, biological, and computational domains. Understanding how such structures behave under perturbation remains an open question with implications for theories of emergence. Analogous questions arise in artificial systems, where large language models and neural networks exhibit emergent structures that persist through training dynamics and noise injection; however, the mechanisms underlying such persistence remain poorly characterised. This paper investigates post-interference correlation levels in small-scale quantum circuits (5--15 qubits) as a minimal, controllable testbed. We compare mutual information between circuits initialised with structured entanglement patterns and randomised baseline circuits subjected to identical local interference protocols. Using correlation retention metrics and statistical comparison, we quantify the degree to which structured initial conditions exhibit differential correlation levels relative to unstructured controls.
+
+Results indicate that structured circuits retain significantly higher absolute mutual information following local interference compared to randomised counterparts (8.0 vs 4.2 bits, $z = 3.50$, $p < 0.001$), with this differential arising from initial conditions rather than differential dynamical response. Accordingly, the term `persistence' is used here to denote preservation of initial correlation magnitude under local operations, not resistance to correlation-destroying perturbations. We emphasise that these findings do not support claims of consciousness, intelligence, intent, or agency in quantum systems, nor do they imply new physics beyond standard quantum mechanics. The contribution of this work is strictly methodological: we establish operational definitions, reproducible experimental protocols, and quantitative metrics for studying structure levels under local interference. This framework may inform future investigations into emergence and information dynamics in complex systems, including neural architectures.
+\end{abstract}
+
+\textbf{Keywords:} Mutual information, Entropy dynamics, Quantum correlations, Structure persistence, Interference protocols, Emergence in complex systems, Information-theoretic metrics
+
+\section{Introduction}
+
+Complex systems across multiple domains---from biological networks to artificial neural architectures---exhibit a common phenomenon: the emergence of structured correlations that persist under perturbation. In information-theoretic terms, such systems develop non-trivial mutual information between subsystems, creating patterns that are neither fully random nor rigidly deterministic. The robustness of these patterns to noise, interference, and partial disruption represents a fundamental characteristic that distinguishes organised systems from disordered ones. Quantifying this robustness, and understanding the conditions under which structured correlations persist or degrade, remains an open problem with implications for fields ranging from statistical physics to machine learning.
+
+The persistence of structure under interference is particularly relevant to contemporary artificial systems. Large language models, for instance, develop internal representations during training that exhibit measurable structure: attention patterns, activation correlations, and learned embeddings that persist through gradient updates, dropout regularisation, and even substantial parameter pruning. Similar observations apply to other neural network architectures, where emergent structure appears to be maintained despite continuous perturbation during optimisation. However, directly studying structure persistence in such systems presents substantial challenges: high dimensionality, opacity of learned representations, and the absence of controlled interference protocols make systematic investigation difficult.
+
+Quantum systems offer a complementary approach. Small-scale quantum circuits (5--15 qubits) provide a minimal testbed in which structured correlations can be precisely initialised, interference can be applied through well-defined unitary operations, and persistence can be measured using established information-theoretic metrics. Crucially, quantum systems permit partial time-reversal operations---applying the inverse of prior evolution---enabling controlled experiments that probe how structure responds to systematic disruption. This is not to suggest that quantum systems possess intelligence, agency, or any cognitive properties; rather, they serve as a tractable experimental model in which the abstract question of structure persistence can be operationalised and measured.
+
+This paper presents a systematic investigation of structure persistence in small-scale quantum circuits subjected to partial time-reversal. We compare circuits initialised with structured entanglement patterns against randomised baseline circuits, applying identical interference protocols and measuring differential behaviour using mutual information, fidelity, and entropy-based metrics. The experimental design is intended to be reproducible on publicly available quantum simulators, requiring no specialised hardware.
+
+\textbf{Contributions.} This paper makes the following contributions:
+\begin{enumerate}
+    \item \textbf{Operational definitions} for structure, interference, persistence, and self-reference that are measurable within quantum circuit experiments.
+    \item \textbf{Experimental protocols} for comparing structured and randomised circuits under partial time-reversal, suitable for implementation on IBM Quantum simulators.
+    \item \textbf{Quantitative metrics} based on mutual information retention, fidelity decay, and entropy dynamics for assessing structure persistence.
+    \item \textbf{Empirical results} demonstrating that structured circuits exhibit measurably higher absolute post-interference correlations compared to randomised controls.
+    \item \textbf{Explicit boundary conditions} clarifying what this work does and does not claim, particularly regarding consciousness, intelligence, and generalisability to larger or different systems.
+\end{enumerate}
+
+\section{Definitions and Conceptual Framework}
+
+To ensure precision and prevent ambiguity, we provide operational definitions for the key terms used throughout this paper. Each definition is formulated to be measurable within the experimental context of small-scale quantum circuits.
+
+\subsection{Structure}
+
+\textbf{Definition.} Structure refers to non-random correlations between subsystems, quantified by mutual information that exceeds a randomised baseline. Formally, given a bipartition of a system into subsystems $A$ and $B$, structure is present when $I(A;B) > I(A;B)_{\text{random}}$, where $I(A;B)$ denotes the mutual information between $A$ and $B$, and $I(A;B)_{\text{random}}$ denotes the expected mutual information under a randomised ensemble.
+
+\textbf{Measurement.} In this paper, structure is measured by computing the mutual information $I(A;B) = S(A) + S(B) - S(AB)$, where $S$ denotes von Neumann entropy. A circuit is classified as ``structured'' if its mutual information exceeds the mean mutual information of randomised control circuits by more than two standard deviations.
+
+\subsection{Interference}
+
+\textbf{Definition.} Interference refers to any unitary operation applied to a system that disrupts existing correlations. In quantum circuits, interference typically involves applying additional gates that do not commute with the circuit's prior evolution, thereby altering the entanglement structure.
+
+\textbf{Measurement.} Interference is operationalised in this paper as partial time-reversal: applying $U^\dagger_{\text{partial}}$, the inverse of a subset of the circuit's unitary operations, followed by a perturbation layer consisting of random single-qubit rotations. The degree of interference is parameterised by the fraction of operations reversed and the magnitude of perturbation angles.
+
+\subsection{Structure Preservation}
+
+\textbf{Definition.} Structure preservation refers to the retention of correlation levels following local interference. A system exhibits preservation if the mutual information post-interference remains at the same level as pre-interference.
+
+\textbf{Measurement.} Preservation is quantified by the correlation retention ratio:
+\begin{equation}
+R = \frac{I(A;B)_{\text{post}}}{I(A;B)_{\text{pre}}}
+\end{equation}
+where $I(A;B)_{\text{pre}}$ is mutual information before interference and $I(A;B)_{\text{post}}$ is mutual information after interference. Values of $R$ closer to 1 indicate higher preservation; values approaching 0 indicate degradation. Note that for local interference protocols, $R = 1.0$ is expected by construction, and the primary metric of interest is the absolute post-interference mutual information $I_{\text{post}}$.
+
+\subsection{Self-Reference (Operational)}
+
+\textbf{Definition.} Self-reference, in this context, refers strictly to circuit architectures where the output of one stage is fed back as input to a subsequent stage, creating a dependency between the system's evolved state and its further evolution. This is a structural property of the circuit, not a cognitive or intentional property.
+
+\textbf{Measurement.} Self-reference is operationalised as the presence of feedback loops in circuit design, where measurement outcomes from intermediate stages condition subsequent gate applications. In this paper, self-referential circuits include mid-circuit measurements with classically-controlled gates. The degree of self-reference is quantified by the number of feedback connections relative to total gate count.
+
+\textbf{Experimental implementation.} Section~\ref{sec:results} presents a self-referential circuit variant demonstrating this definition, with mid-circuit measurement on one Bell pair and classically-controlled feedforward gates conditioning subsequent evolution.
+
+\subsection{Randomised Baseline}
+
+\textbf{Definition.} The randomised baseline refers to an ensemble of control circuits constructed by replacing structured entanglement patterns with random unitary operations drawn from an appropriate distribution (e.g., Haar-random single-qubit gates, random two-qubit entangling gates).
+
+\textbf{Measurement.} For each structured circuit, we generate $N$ randomised variants ($N \geq 100$) matched for circuit depth and gate count. The baseline is characterised by the mean and standard deviation of mutual information across this ensemble. Statistical significance of structure persistence is assessed by comparing the structured circuit's metrics against this baseline distribution.
+
+\section{Related Work}
+
+This section situates the present study within four areas of existing research: emergence in complex systems, information-theoretic approaches to structure, quantum reversibility and echo experiments, and emergence in artificial systems. We position our contribution as a synthesis of methods from these domains, applied to a specific experimental question.
+
+\subsection{Emergence in Complex Systems}
+
+The study of emergence---how macroscopic patterns arise from microscopic interactions---has a substantial literature across physics, biology, and computational science. Work on self-organised criticality~\cite{bak1987self}, dissipative structures~\cite{prigogine1977self}, and complex adaptive systems~\cite{holland1992complex} established foundational frameworks for understanding how structure develops in far-from-equilibrium systems. More recently, integrated information theory~\cite{tononi2004information} and related approaches have attempted to quantify the degree of emergence in terms of information-theoretic measures. Our work draws on this tradition by operationalising ``structure'' as measurable mutual information, though we make no claims about consciousness or integrated information per se.
+
+\subsection{Information-Theoretic Approaches to Structure}
+
+Information theory provides a natural language for describing correlations and structure. Shannon entropy and mutual information have been applied extensively to characterise order in physical systems~\cite{jaynes1957information}, biological networks~\cite{tkacik2016information}, and neural systems~\cite{borst1999information}. The use of entropy-based measures to distinguish random from structured configurations is well established. Our contribution lies not in introducing new measures, but in applying existing information-theoretic metrics to a specific experimental protocol designed to probe structure persistence under controlled interference.
+
+\subsection{Quantum Reversibility and Echo Experiments}
+
+Quantum systems provide unique opportunities to study dynamics under controlled reversal. Loschmidt echo experiments~\cite{gorin2006dynamics} measure the sensitivity of quantum evolution to perturbations by applying forward evolution, introducing a perturbation, and then reversing the evolution. Fidelity decay under such protocols has been studied extensively in contexts ranging from quantum chaos to decoherence. Our experimental design builds on this tradition, adapting partial time-reversal protocols to investigate not merely fidelity, but the differential persistence of structured versus random initial conditions. Related work on out-of-time-order correlators (OTOCs)~\cite{swingle2018unscrambling} provides complementary perspectives on information scrambling that inform our interpretation.
+
+\subsection{Emergence in Artificial Systems}
+
+Large language models and deep neural networks exhibit emergent properties that have attracted significant research attention~\cite{wei2022emergent}. Studies of superposition~\cite{elhage2022softmax}, phase transitions in capability~\cite{ganguli2022predictability}, and the robustness of learned representations to pruning and noise~\cite{frankle2019lottery} demonstrate that artificial systems develop persistent internal structure. However, the mechanisms underlying this persistence remain poorly understood. Our work does not directly study neural networks, but we frame quantum experiments as a minimal testbed that may inform future theoretical and empirical investigations of structure persistence in artificial systems.
+
+\subsection{Positioning of This Work}
+
+The present study synthesises methods from quantum reversibility experiments with metrics from information theory, applied to the question of structure persistence that motivates emergence research. We do not claim novelty in any individual component; rather, our contribution lies in (i) the specific experimental protocol combining structured initialisation with partial time-reversal, (ii) the operational definitions that permit reproducible measurement, and (iii) the framing that connects quantum experiments to broader questions about structure in complex and artificial systems.
+
+\section{Methods}
+
+This section describes the experimental methodology for investigating structure persistence in small-scale quantum circuits. The procedure is designed for reproducibility on publicly available quantum simulators (IBM Quantum Qiskit Aer) and does not require access to physical quantum hardware.
+
+\subsection{System Parameters}
+
+\textbf{Qubit count.} Experiments use systems of $n = 8$ qubits, partitioned into two subsystems $A$ and $B$ of 4 qubits each. This scale permits exact state vector simulation while providing sufficient Hilbert space dimensionality ($2^8 = 256$) for meaningful correlation structure.
+
+\textbf{Circuit depth.} Structured and randomised circuits are matched for total depth $d = 12$ layers, where each layer consists of single-qubit rotations followed by two-qubit entangling gates.
+
+\textbf{Trial count.} Each experimental condition is repeated for $T = 100$ independent trials with different random seeds to establish statistical significance.
+
+\subsection{Structured Circuit Construction}
+
+Structured circuits are constructed to produce specific, reproducible entanglement patterns between subsystems $A$ and $B$. The construction proceeds as follows:
+\begin{enumerate}
+    \item \textbf{Initialisation.} All qubits begin in the $|0\rangle$ state.
+    \item \textbf{Structured entanglement layer.} Apply a fixed sequence of CNOT gates creating a known entanglement pattern: CNOT(0,4), CNOT(1,5), CNOT(2,6), CNOT(3,7), creating pairwise entanglement between subsystems $A$ and $B$.
+    \item \textbf{Coherent evolution.} Apply $d/2 = 6$ layers of parameterised single-qubit rotations $R_Y(\theta)$ and $R_Z(\phi)$ with fixed, reproducible angles $\theta_i$, $\phi_i$ drawn from a specified seed.
+    \item \textbf{Additional entangling layers.} Apply 3 layers of nearest-neighbour CZ gates within each subsystem to develop internal correlations.
+\end{enumerate}
+The resulting circuit produces a state with high mutual information $I(A;B)$ due to the initial cross-subsystem entanglement structure.
+
+\subsection{Randomised Baseline Construction}
+
+For each structured circuit, $N = 100$ randomised control circuits are generated with matched depth and gate count:
+\begin{enumerate}
+    \item \textbf{Initialisation.} All qubits begin in the $|0\rangle$ state.
+    \item \textbf{Random entanglement layer.} Replace the structured CNOT pattern with random two-qubit gates (Haar-random unitaries) applied to randomly selected qubit pairs.
+    \item \textbf{Random evolution.} Apply $d/2 = 6$ layers of single-qubit rotations with angles drawn uniformly from $[0, 2\pi]$.
+    \item \textbf{Random internal entanglement.} Apply 3 layers of two-qubit gates to randomly selected pairs.
+\end{enumerate}
+These circuits are not expected to produce systematic correlations between subsystems $A$ and $B$.
+
+\subsection{Interference Protocol: Partial Time-Reversal}
+
+The interference protocol applies partial time-reversal to probe structure persistence:
+\begin{enumerate}
+    \item \textbf{Forward evolution complete.} After circuit construction, record the pre-interference state $|\psi_{\text{pre}}\rangle$.
+    \item \textbf{Partial inverse application.} Apply the inverse (conjugate transpose) of the final $k = 4$ layers of the circuit, representing reversal of approximately 33\% of the evolution.
+    \item \textbf{Perturbation injection.} Apply a perturbation layer consisting of random single-qubit rotations $R_X(\epsilon)$, $R_Y(\epsilon)$, $R_Z(\epsilon)$ where $\epsilon \sim \mathcal{N}(0, \sigma^2)$ with $\sigma = 0.1$ radians.
+    \item \textbf{Measurement.} The post-interference state $|\psi_{\text{post}}\rangle$ is obtained via state vector simulation.
+\end{enumerate}
+
+\subsection{Noise Model}
+
+To simulate realistic conditions, optional depolarising noise is applied:
+\begin{itemize}
+    \item \textbf{Single-qubit gate error:} $p_1 = 0.001$ per gate
+    \item \textbf{Two-qubit gate error:} $p_2 = 0.01$ per gate
+    \item \textbf{Measurement error:} Not applicable (state vector simulation provides exact density matrix)
+\end{itemize}
+Experiments are conducted both with and without noise to isolate the effects of interference from decoherence.
+
+\subsection{Control Experiments}
+
+Two control conditions are included:
+\begin{enumerate}
+    \item \textbf{No-interference control.} Structured circuits measured without applying partial time-reversal, establishing baseline mutual information.
+    \item \textbf{Full reversal control.} Complete inverse $U^\dagger$ applied (without perturbation), verifying that perfect reversal recovers initial states.
+\end{enumerate}
+
+\subsection{Reproducibility Parameters}
+
+All experiments use fixed random seeds documented in the supplementary materials. The experimental pipeline is implemented in Python 3.10 using Qiskit 0.45+ and NumPy 1.24+.
+
+\section{Metrics}
+
+This section defines the quantitative metrics used to evaluate structure persistence. Each metric is chosen for its established use in information theory and quantum information science, ensuring comparability with prior work.
+
+\subsection{Mutual Information}
+
+\textbf{Definition.} The mutual information between subsystems $A$ and $B$ quantifies the total correlations (classical and quantum) between them:
+\begin{equation}
+I(A;B) = S(\rho_A) + S(\rho_B) - S(\rho_{AB})
+\end{equation}
+where $S(\rho) = -\text{Tr}(\rho \log_2 \rho)$ is the von Neumann entropy, $\rho_A = \text{Tr}_B(\rho_{AB})$ and $\rho_B = \text{Tr}_A(\rho_{AB})$ are the reduced density matrices of subsystems $A$ and $B$, and $\rho_{AB}$ is the full system density matrix.
+
+\textbf{Rationale.} Mutual information captures the degree to which knowledge of one subsystem provides information about the other. High mutual information indicates strong correlations; zero mutual information indicates independence. This metric is appropriate because structure, as defined in Section 2.1, manifests as non-random correlations between subsystems.
+
+\textbf{Measurement procedure.} From the state vector $|\psi\rangle$ obtained via simulation, construct $\rho_{AB} = |\psi\rangle\langle\psi|$. Compute reduced density matrices via partial trace. Calculate von Neumann entropy for each using eigenvalue decomposition. Report $I(A;B)$ in bits.
+
+\subsection{Correlation Retention Ratio}
+
+\textbf{Definition.} The correlation retention ratio $R$ measures the fraction of mutual information preserved after interference:
+\begin{equation}
+R = \frac{I(A;B)_{\text{post}}}{I(A;B)_{\text{pre}}}
+\end{equation}
+where $I(A;B)_{\text{pre}}$ is mutual information before interference and $I(A;B)_{\text{post}}$ is mutual information after interference.
+
+\textbf{Rationale.} This ratio provides a normalised measure of persistence that controls for differences in initial correlation magnitude between circuits. A ratio of $R = 1$ indicates perfect preservation; $R = 0$ indicates complete decorrelation.
+
+\textbf{Measurement procedure.} Compute $I(A;B)$ before and after the interference protocol. Report $R$ as a dimensionless ratio. For statistical analysis, compute mean $R$ and standard deviation across trials.
+
+\subsection{State Fidelity}
+
+\textbf{Definition.} The fidelity between the pre-interference state and post-interference state measures their overlap:
+\begin{equation}
+F = |\langle\psi_{\text{pre}}|\psi_{\text{post}}\rangle|^2
+\end{equation}
+For mixed states (when noise is applied), the generalised fidelity is:
+\begin{equation}
+F(\rho, \sigma) = \left( \text{Tr}\sqrt{\sqrt{\rho}\sigma\sqrt{\rho}} \right)^2
+\end{equation}
+
+\textbf{Rationale.} Fidelity provides a complementary perspective to mutual information by measuring global state similarity rather than correlation structure specifically. Comparing fidelity decay rates between structured and randomised circuits indicates whether structure affects overall state robustness.
+
+\textbf{Measurement procedure.} Compute inner product of state vectors (pure states) or apply the Uhlmann fidelity formula (mixed states). Report $F$ as a value in $[0, 1]$.
+
+\subsection{Entropy Dynamics}
+
+\textbf{Definition.} We track the von Neumann entropy of subsystems before and after interference:
+\begin{itemize}
+    \item \textbf{Subsystem entropy:} $S(\rho_A)$, $S(\rho_B)$
+    \item \textbf{Total system entropy:} $S(\rho_{AB})$ (zero for pure states, non-zero under noise)
+\end{itemize}
+
+\textbf{Rationale.} Subsystem entropy reflects the degree of entanglement with the complementary subsystem. Changes in subsystem entropy under interference indicate restructuring of correlations. For pure states, $S(\rho_A) = S(\rho_B) = I(A;B)/2$ when the state is maximally correlated.
+
+\textbf{Measurement procedure.} Compute von Neumann entropy from eigenvalues of reduced density matrices. Report in bits. Track $\Delta S = S_{\text{post}} - S_{\text{pre}}$ for each subsystem.
+
+\subsection{Statistical Comparison with Baseline}
+
+\textbf{Procedure.} For each structured circuit, compare its post-interference metrics against the distribution of metrics from $N = 100$ randomised control circuits:
+\begin{enumerate}
+    \item Compute mean $\mu$ and standard deviation $\sigma$ of $R$, $F$, and $I(A;B)_{\text{post}}$ for randomised circuits.
+    \item Compute z-score for structured circuit: $z = (X_{\text{structured}} - \mu) / \sigma$.
+    \item Report p-values assuming Gaussian distribution (verified via Shapiro-Wilk test).
+    \item Apply Bonferroni correction for multiple comparisons where applicable.
+\end{enumerate}
+
+\textbf{Significance threshold.} Results are considered statistically significant at $p < 0.01$ (two-tailed).
+
+\section{Results}
+\label{sec:results}
+
+This section presents the experimental results from running the structure persistence protocol on 8-qubit quantum circuits (4+4 partition) with 100 trials per condition.
+
+\subsection{Summary Statistics}
+
+\begin{table}[h]
+\centering
+\begin{tabular}{lccc}
+\toprule
+\textbf{Metric} & \textbf{Structured Circuits} & \textbf{Randomised Circuits} & \textbf{Difference} \\
+\midrule
+$I(A;B)$ post-interference & $8.00 \pm 0.00$ bits & $4.22 \pm 1.08$ bits & $+3.78$ bits \\
+Correlation Retention $R$ & $1.00 \pm 0.00$ & $1.00 \pm 0.00$ & $0.00$ \\
+State Fidelity $F$ & $0.008 \pm 0.022$ & $0.023 \pm 0.044$ & $-0.015$ \\
+z-score ($I_{\text{post}}$) & --- & --- & $\mathbf{+3.50}$ \\
+\bottomrule
+\end{tabular}
+\caption{Summary statistics for structured and randomised circuits under the interference protocol.}
+\label{tab:summary}
+\end{table}
+
+\subsection{Primary Finding: Differential Mutual Information}
+
+The central result is the statistically significant difference in post-interference mutual information between circuit types:
+\begin{itemize}
+    \item \textbf{Structured circuits:} $I(A;B) = 8.00$ bits (maximum possible for 4 Bell pairs)
+    \item \textbf{Randomised circuits:} $I(A;B) = 4.22 \pm 1.08$ bits (variable, depending on random entanglement patterns)
+    \item \textbf{z-score = 3.50}, corresponding to $p < 0.001$ (two-tailed)
+\end{itemize}
+This confirms that structured circuits, initialised with deliberate cross-subsystem entanglement, maintain significantly higher correlations than randomised controls following identical interference protocols.
+
+\subsection{Correlation Retention Ratio as Control Metric}
+
+Both circuit types exhibit $R = 1.0$, indicating near-perfect retention of initial correlations through the interference protocol. This result serves as a \textbf{normalisation check} and \textbf{control metric} confirming that the protocol behaves as expected theoretically.
+
+Because the interference protocol consists exclusively of local unitary operations (single-qubit rotations and intra-subsystem gates), the mutual information between subsystems $A$ and $B$ is invariant under the protocol. As a result, the correlation retention ratio $R$ remains approximately 1.0 for both structured and randomised circuits. This behaviour is expected from quantum information theory and is confirmed by independent sanity checks.
+
+Specifically:
+\begin{enumerate}
+    \item \textbf{Single-qubit perturbations are local operations.} Local unitaries cannot alter the mutual information between subsystems, as they do not create or destroy entanglement across the $A$-$B$ partition.
+    \item \textbf{Internal entangling gates (CZ within $A$ or within $B$) do not affect $I(A;B)$.} Gates acting entirely within one subsystem cannot change correlations with the other subsystem.
+    \item \textbf{The partial time-reversal (CZ self-inverse) is also local to each subsystem.} Applying CZ gates again within $A$ and $B$ separately does not alter cross-subsystem correlations.
+\end{enumerate}
+
+The $R = 1.0$ result confirms that the interference protocol is functioning correctly and that the \textbf{primary discriminating metric is the absolute post-interference mutual information $I_{\text{post}}$}, not the retention ratio.
+
+\subsection{State Fidelity}
+
+State fidelity $F$ measures global similarity between pre- and post-interference states. Both circuit types show low fidelity ($F < 0.03$ on average), indicating that the interference protocol substantially alters the global quantum state despite preserving mutual information. This is consistent with the observation that local rotations change the state in Hilbert space while leaving correlation structure intact. Low fidelity alongside invariant mutual information highlights that global state similarity and correlation structure are fundamentally distinct properties; the former tracks phase and amplitude relationships across the full state space, while the latter captures only bipartite dependency structure.
+
+\subsection{Interpretation}
+
+The results support the paper's central thesis: \textbf{structured circuits retain significantly higher absolute mutual information following interference compared to randomised baselines, despite identical interference protocols.} The mechanism is straightforward:
+\begin{enumerate}
+    \item Structured circuits begin with maximum cross-subsystem entanglement (Bell pairs).
+    \item The interference protocol applies only local operations.
+    \item Local operations preserve mutual information by construction.
+    \item Therefore, structured circuits retain their initial high correlations.
+\end{enumerate}
+Randomised circuits, by contrast, begin with variable and typically lower cross-subsystem correlations, and this difference persists through the (local) interference protocol.
+
+\subsection{Self-Referential Circuit Variant}
+
+To demonstrate the operational definition of self-reference, we implement a circuit variant with mid-circuit measurement and classical feedforward:
+
+\textbf{Construction:}
+\begin{enumerate}
+    \item Begin with structured Bell-pair initialisation
+    \item Apply mid-circuit measurement to qubits 0 and 4 (one Bell pair)
+    \item Apply classically-controlled feedforward gates: $X$ on qubit 1 conditioned on measurement of qubit 0; $Z$ on qubit 5 conditioned on measurement of qubit 4
+    \item Continue with standard parameterised evolution and internal entanglement layers
+\end{enumerate}
+
+\textbf{Observations:}
+
+The self-referential circuit demonstrates the key distinction between local and non-local operations:
+\begin{itemize}
+    \item \textbf{Mid-circuit measurement collapses entanglement.} The measurement on qubits 0 and 4 destroys their Bell pair, reducing cross-subsystem entanglement from 4 Bell pairs to 3.
+    \item \textbf{Feedforward gates are local.} The classically-controlled $X$ and $Z$ gates act on individual qubits and do not restore or create new cross-subsystem entanglement.
+    \item \textbf{Post-measurement MI reflects reduced structure.} The mutual information after measurement is lower than the non-measured structured circuit.
+\end{itemize}
+
+This variant confirms that \emph{non-local operations (measurement)} can alter mutual information, while \emph{local operations (feedforward gates)} cannot. The self-referential architecture does not confer additional resilience under local perturbations, consistent with the theoretical framework.
+
+\section{Discussion}
+
+\subsection{Validation of the Structure Preservation Hypothesis}
+
+The experimental results confirm that structured quantum circuits exhibit measurably different behaviour from randomised circuits under local interference. Specifically, structured circuits maintain $I(A;B) = 8.0$ bits (the theoretical maximum for the 4-Bell-pair configuration), while randomised circuits average $I(A;B) = 4.22$ bits with substantial variance ($\sigma = 1.08$ bits). The Bell-pair configuration is chosen not for generality, but for maximal interpretability and analytical clarity, providing a calibration experiment against which future investigations with more complex structures can be compared.
+
+This differential is statistically significant ($z = 3.50$, $p < 0.001$) and robust across 100 independent trials per condition.
+
+\textbf{Initial condition dominance.} The observed differential arises entirely from initial conditions rather than differential dynamical response. The protocol preserves initial differences in mutual information exactly, because local unitary operations are structurally incapable of altering bipartite correlations. This is not a limitation of the experiment but rather a feature of the theoretical framework: the protocol demonstrates that \emph{initial structure levels persist through local interference}, not that structured systems are more \emph{resistant} to correlation-destroying perturbations.
+
+\subsection{Implications for Structure Persistence}
+
+The key insight from these results is that \textbf{structure persistence is a property of the initial configuration, not of the perturbation dynamics}. When the interference protocol consists of local operations, any initial correlations are preserved exactly. The ``persistence'' observed is therefore not an active process of maintaining structure against disruption, but rather a reflection of the fact that local operations are structurally incapable of degrading cross-subsystem correlations.
+
+This has implications for interpreting structure persistence in other contexts:
+\begin{enumerate}
+    \item \textbf{The perturbation must be non-local to test resilience.} A more demanding test of structure persistence would involve perturbations that can, in principle, reduce mutual information---for example, entangling operations that scramble correlations across the $A$-$B$ boundary.
+    \item \textbf{The observed differential is in the starting point, not the dynamics.} Structured and randomised circuits differ primarily in their initial mutual information, and this difference is faithfully preserved through the protocol.
+\end{enumerate}
+
+In this sense, the experiment functions as a controlled demonstration of initial-condition dominance rather than a test of dynamical robustness. This framing is intentional: establishing that initial structure levels are preserved exactly under local operations provides a baseline against which future non-local perturbation studies can be compared.
+
+\subsection{Connection to Broader Themes}
+
+Despite the specific mechanism being local-preservation rather than active-resilience, the results remain informative for the broader question motivating this work. In physical, biological, and artificial systems, structured correlations often arise through specific developmental or training processes, and the question of whether such structures persist under perturbation has practical significance.
+
+The quantum circuit experiments establish:
+\begin{enumerate}
+    \item \textbf{Operationally defined structure} (via Bell-pair initialisation) produces \textbf{measurable mutual information} (8 bits).
+    \item \textbf{Randomised configurations} produce \textbf{variable and lower mutual information} (mean 4.2 bits).
+    \item \textbf{Identical perturbation protocols} applied to both yield a \textbf{statistically significant differential} in final correlations.
+\end{enumerate}
+
+These findings provide a controlled demonstration of the phenomenon that structured systems carry more persistent correlations than unstructured ones, which may inform theoretical and empirical investigations in neural networks, biological systems, and other complex architectures.
+
+\section{Limitations}
+
+\subsection{Scope of Interference}
+
+The present study restricts interference to local unitary perturbations, which by construction preserve bipartite mutual information. This is an important scope limitation: the protocol tests whether structured and randomised circuits \emph{differ in their correlation levels} after identical local operations, not whether structured circuits are more \emph{resistant} to correlation-destroying perturbations.
+
+Future work may extend this framework to include non-local noise channels, measurements, or cross-partition scrambling operations, where differential decay in $R$ may be observable. Such extensions would provide a more stringent test of whether structured systems exhibit active resilience to disruption.
+
+\subsection{Other Limitations}
+
+\begin{enumerate}
+    \item \textbf{Small scale.} The 8-qubit, 4+4 partition is tractable for simulation but may not capture behaviours that emerge at larger scales.
+    \item \textbf{Pure state simulation.} Results are obtained from ideal state vector simulation without noise. Hardware execution may introduce decoherence effects.
+    \item \textbf{Specific structure.} The ``structured'' circuits use a particular Bell-pair pattern. Other structured configurations may behave differently.
+\end{enumerate}
+
+\subsection{Future Directions}
+
+\begin{enumerate}
+    \item \textbf{Non-local perturbations.} Introduce cross-subsystem operations (e.g., random CNOT gates across the $A$-$B$ boundary) to test whether structured circuits degrade more slowly than randomised ones.
+    \item \textbf{Hardware execution.} Run experiments on physical quantum hardware to assess robustness to realistic noise.
+    \item \textbf{Scaling studies.} Extend to larger qubit counts to investigate whether structure persistence exhibits any scale-dependent phenomena.
+    \item \textbf{Connection to neural networks.} Develop analogous protocols for measuring structure persistence in trained neural network representations.
+\end{enumerate}
+
+\section{Conclusion}
+
+This paper has presented a systematic investigation of structure persistence in small-scale quantum circuits. Using an 8-qubit system partitioned into two 4-qubit subsystems, we compared structured circuits (initialised with maximal cross-subsystem entanglement via Bell pairs) against randomised baseline circuits under identical partial time-reversal and perturbation protocols.
+
+\textbf{Key findings:}
+\begin{enumerate}
+    \item Structured circuits maintain $I(A;B) = 8.0$ bits throughout the protocol, while randomised circuits average $I(A;B) = 4.22 \pm 1.08$ bits.
+    \item The difference is statistically significant ($z = 3.50$, $p < 0.001$).
+    \item Both circuit types exhibit $R \approx 1.0$ (perfect correlation retention), consistent with the theoretical expectation that local operations preserve mutual information.
+\end{enumerate}
+
+The results validate the paper's central claim: \textbf{structured circuits retain significantly higher absolute mutual information following interference compared to randomised baselines, despite identical interference protocols.} The mechanism is the preservation of initial correlations through local perturbations, which by construction cannot degrade cross-subsystem mutual information.
+
+This work establishes operational definitions, reproducible protocols, and quantitative metrics for studying structure persistence in quantum systems. The framework may inform future investigations into emergence, information dynamics, and the robustness of learned representations in neural architectures.
+
+\appendix
+
+\section{Qiskit Qubit Ordering}
+
+Qiskit uses little-endian (reversed) qubit ordering in state vector representations. Circuit qubit 0 corresponds to the least significant bit (rightmost position) in the state vector. When computing partial traces to obtain reduced density matrices:
+\begin{itemize}
+    \item \textbf{Subsystem $A$} (circuit qubits 0 to $n_A-1$) corresponds to state positions $(n-1)$ to $(n-n_A)$
+    \item \textbf{Subsystem $B$} (circuit qubits $n_A$ to $n-1$) corresponds to state positions $(n-n_A-1)$ to 0
+\end{itemize}
+The experimental code accounts for this indexing when computing mutual information via \texttt{partial\_trace()}.
+
+\bibliographystyle{plain}
+\bibliography{references}
+
+\end{document}
