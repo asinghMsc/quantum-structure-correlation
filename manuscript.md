@@ -6,9 +6,9 @@
 
 ## Abstract
 
-Structured correlations--defined as non-random patterns in mutual information between subsystems--arise in complex systems across physical, biological, and computational domains. Understanding how such structures behave under perturbation remains an open question with implications for theories of emergence. Analogous questions arise in artificial systems, where large language models and neural networks exhibit emergent structures that persist through training dynamics and noise injection; however, the mechanisms underlying such persistence remain poorly characterised. This paper investigates post-interference correlation levels in small-scale quantum circuits (5-15 qubits) as a minimal, controllable testbed. We compare mutual information between circuits initialised with structured entanglement patterns and randomised baseline circuits subjected to identical local interference protocols. Using correlation retention metrics and statistical comparison, we quantify the degree to which structured initial conditions exhibit differential correlation levels relative to unstructured controls.
+We analyse how mutual information and correlation structure differ between structured and randomised quantum systems under a partial time-reversal protocol. Structured correlations--defined as non-random patterns in mutual information between subsystems--arise in complex systems across physical, biological, and computational domains. Understanding how such structures behave under perturbation remains an open question with implications for theories of emergence. Analogous questions arise in artificial systems, where large language models and neural networks exhibit emergent structures that persist through training dynamics; however, the mechanisms underlying such persistence remain poorly characterised. This paper investigates post-interference correlation levels in small-scale quantum circuits (5-15 qubits) as a minimal, controllable testbed. We compare mutual information between circuits initialised with structured entanglement patterns and randomised baseline circuits subjected to identical local interference protocols. Using mutual information retention metrics and statistical comparison, we quantify the degree to which structured initial conditions exhibit differential correlation levels relative to unstructured controls.
 
-Results indicate that structured circuits retain significantly higher absolute mutual information following local interference compared to randomised counterparts (8.0 vs 4.2 bits, z = 3.50, p < 0.001), with this differential arising from initial conditions rather than differential dynamical response. Accordingly, the term 'persistence' is used here to denote preservation of initial correlation magnitude under local operations, not resistance to correlation-destroying perturbations. We emphasise that these findings do not support claims of consciousness, intelligence, intent, or agency in quantum systems, nor do they imply new physics beyond standard quantum mechanics. The contribution of this work is strictly methodological: we establish operational definitions, reproducible experimental protocols, and quantitative metrics for studying structure levels under local interference. This framework may inform future investigations into emergence and information dynamics in complex systems, including neural architectures.
+Results indicate that structured circuits retain significantly higher absolute mutual information following local interference compared to randomised counterparts (8.0 vs 4.2 bits, z = 3.50, p < 0.001), with this differential ($\Delta I$) arising from initial conditions rather than differential dynamical response. Accordingly, we distinguish between the preservation of initial correlation magnitude under local operations and active resistance to correlation-destroying perturbations. We emphasise that these findings do not support claims of consciousness, intelligence, or agency in quantum systems. The contribution of this work is strictly methodological: we establish operational definitions, reproducible experimental protocols, and quantitative metrics for studying structured correlation levels under local interference. This framework may inform future investigations into emergence and information dynamics in complex systems.
 
 ---
 
@@ -51,7 +51,7 @@ To ensure precision and prevent ambiguity, we provide operational definitions fo
 
 ### 2.1 Structure
 
-**Definition.** Structure refers to non-random correlations between subsystems, quantified by mutual information that exceeds a randomised baseline. Formally, given a bipartition of a system into subsystems A and B, structure is present when I(A;B) > I(A;B)_random, where I(A;B) denotes the mutual information between A and B, and I(A;B)_random denotes the expected mutual information under a randomised ensemble.
+**Definition.** Structure refers to non-random correlations between subsystems, quantified by mutual information that exceeds a randomised baseline. Throughout this work, ‘structure’ refers to non-random correlation patterns measurable via mutual information, independent of physical implementation details. Formally, given a bipartition of a system into subsystems A and B, structure is present when I(A;B) > I(A;B)_random, where I(A;B) denotes the mutual information between A and B, and I(A;B)_random denotes the expected mutual information under a randomised ensemble.
 
 **Measurement.** In this paper, structure is measured by computing the mutual information I(A;B) = S(A) + S(B) − S(AB), where S denotes von Neumann entropy. A circuit is classified as "structured" if its mutual information exceeds the mean mutual information of randomised control circuits by more than two standard deviations.
 
@@ -65,7 +65,7 @@ To ensure precision and prevent ambiguity, we provide operational definitions fo
 
 **Definition.** Structure preservation refers to the retention of correlation levels following local interference. A system exhibits preservation if the mutual information post-interference remains at the same level as pre-interference.
 
-**Measurement.** Preservation is quantified by the correlation retention ratio: R = I(A;B)_post / I(A;B)_pre, where I(A;B)_pre is mutual information before interference and I(A;B)_post is mutual information after interference. Values of R closer to 1 indicate higher preservation; values approaching 0 indicate degradation. Note that for local interference protocols, R = 1.0 is expected by construction, and the primary metric of interest is the absolute post-interference mutual information I_post.
+**Measurement.** Preservation is quantified by the mutual information retention ratio: R = I(A;B)_post / I(A;B)_pre, where I(A;B)_pre is mutual information before interference and I(A;B)_post is mutual information after interference. Values of R closer to 1 indicate higher preservation of mutual information levels; values approaching 0 indicate degradation. Note that for local interference protocols, R = 1.0 is expected by construction, and the primary metric of interest is the absolute post-interference mutual information I_post.
 
 ### 2.4 Self-Reference (Operational)
 
@@ -249,24 +249,24 @@ This section presents the experimental results from running the structure persis
 
 ### 6.1 Summary Statistics
 
-| Metric | Structured Circuits | Randomised Circuits | Difference |
+| Metric | Structured Circuits | Randomised Circuits | ΔI / Difference |
 |--------|--------------------|--------------------|------------|
 | **I(A;B) post-interference** | 8.00 ± 0.00 bits | 4.22 ± 1.08 bits | +3.78 bits |
-| **Correlation Retention R** | 1.00 ± 0.00 | 1.00 ± 0.00 | 0.00 |
+| **MI Retention R** | 1.00 ± 0.00 | 1.00 ± 0.00 | 0.00 |
 | **State Fidelity F** | 0.008 ± 0.022 | 0.023 ± 0.044 | -0.015 |
 | **z-score (I_post)** | — | — | **+3.50** |
 
 ### 6.2 Primary Finding: Differential Mutual Information
 
-The central result is the statistically significant difference in post-interference mutual information between circuit types:
+The central result is the statistically significant difference (ΔI = 3.78 bits) in post-interference mutual information between circuit types:
 
-- **Structured circuits:** I(A;B) = 8.00 bits (maximum possible for 4 Bell pairs)
-- **Randomised circuits:** I(A;B) = 4.22 ± 1.08 bits (variable, depending on random entanglement patterns)
-- **z-score = 3.50**, corresponding to p < 0.001 (two-tailed)
+- **Structured circuits:** I(A;B) = 8.00 bits (theoretically maximum for 4 Bell pairs)
+- **Randomised circuits:** I(A;B) = 4.22 ± 1.08 bits
+- **Statistical separation:** z-score = 3.50, p < 0.001 (two-tailed)
 
-This confirms that structured circuits, initialised with deliberate cross-subsystem entanglement, maintain significantly higher correlations than randomised controls following identical interference protocols.
+This establishes a clear separation between structured initial conditions and randomised controls, demonstrating that initial correlation levels are precisely preserved beneath the interference protocol.
 
-### 6.3 Correlation Retention Ratio as Control Metric
+### 6.3 MI Retention Ratio as Control Metric
 
 Both circuit types exhibit R = 1.0, indicating near-perfect retention of initial correlations through the interference protocol. This result serves as a **normalisation check** and **control metric** confirming that the protocol behaves as expected theoretically.
 
