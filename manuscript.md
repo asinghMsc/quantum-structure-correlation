@@ -374,9 +374,27 @@ This work establishes operational definitions, reproducible protocols, and quant
 
 ---
 
+## Data and Code Availability
+
+The codebase for the experimental protocols, including the Qiskit circuit implementations, the structure persistence simulation pipeline, and the analysis scripts used to generate the results in this paper, is available on GitHub at: [https://github.com/asinghMsc/quantum-structure-correlation](https://github.com/asinghMsc/quantum-structure-correlation)
+
+---
+
 ## References
 
-[To be added]
+1. Bak, P., Tang, C., and Wiesenfeld, K. (1987). **Self-organized criticality: An explanation of the 1/f noise**. *Physical Review Letters*, 59(4), 381.
+2. Borst, A., and Theunissen, F. E. (1999). **Information theory and neural coding**. *Nature Neuroscience*, 2(11), 947–957.
+3. Elhage, N., et al. (2022). **Softmax linear units**. *Transformer Circuits Thread*. [https://transformer-circuits.pub/2022/solu/index.html](https://transformer-circuits.pub/2022/solu/index.html).
+4. Frankle, J., and Carbin, M. (2019). **The Lottery Ticket Hypothesis: Finding Sparse, Trainable Neural Networks**. *International Conference on Learning Representations*.
+5. Ganguli, D., et al. (2022). **Predictability and surprise in large generative models**. *Proceedings of the 2022 ACM Conference on Fairness, Accountability, and Transparency*, 1747–1764.
+6. Gorin, T., Prosen, T., Seligman, T. H., and Žnidarič, M. (2006). **Dynamics of Loschmidt echoes and fidelity decay**. *Physics Reports*, 435(2-5), 33–156.
+7. Holland, J. H. (1992). **Complex adaptive systems**. *Daedalus*, 121(1), 17–30.
+8. Jaynes, E. T. (1957). **Information theory and statistical mechanics**. *Physical Review*, 106(4), 620.
+9. Prigogine, I., and Nicolis, G. (1977). **Self-organization in nonequilibrium systems: from dissipative structures to order through fluctuations**. *Wiley, New York*.
+10. Swingle, B. (2018). **Unscrambling the physics of out-of-time-order correlators**. *Nature Physics*, 14(10), 988–990.
+11. Tkačik, G., and Bialek, W. (2016). **Information processing in living systems**. *Annual Review of Condensed Matter Physics*, 7, 89–117.
+12. Tononi, G. (2004). **An information-theoretical measure of integrated information in discrete systems of interacting elements**. *BMC Neuroscience*, 5(1), 42.
+13. Wei, J., et al. (2022). **Emergent abilities of large language models**. *Transactions on Machine Learning Research*.
 
 ---
 
